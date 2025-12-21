@@ -1,7 +1,7 @@
 
-from src.books import Book
-from src.books_collection import BookCollection
-from src.index_dict import IndexDict
+from books import Book
+from books_collection import BookCollection
+from index_dict import IndexDict
 
 
 class Library:

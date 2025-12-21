@@ -1,6 +1,6 @@
 
 from datetime import datetime
-from src.constans import CoverType
+from constans import CoverType
 
 class Book:
 

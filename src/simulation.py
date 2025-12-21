@@ -75,7 +75,7 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
                 book = random.choice(added_books_history)
                 print(f"[Симуляция] Пытаемся взять книгу: {book.title}\n")
                 if book.borrow():
-                    print(f"Книга взята. Всего взятий: {book.borrow_count()}\n")
+                    print(f"    Книга взята. Всего взятий: {book.borrow_count()}\n")
 
                     if isinstance(book, HardCover):
                         book.damage(random.randint(0, 5))
@@ -85,7 +85,7 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
                         book.add_scratches(random.randint(0, 5))
                         book.damage(random.randint(3, 10))
                 else:
-                    print('Книга уже взята')
+                    print(' Книга уже взята')
             else:
                 print('[Симуляция] Нет книг для взятия')
 
@@ -115,19 +115,19 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
                 if isinstance(book, HardCover):
                     damage = random.randint(5, 15)
                     book.damage(damage)
-                    print(f"  Прочность снижена на {damage}%. Текущая: {book.get_condition()}%\n")
+                    print(f"    Прочность снижена на {damage}%. Текущее состояние: {book.get_condition()}\n")
                     
                 elif isinstance(book, SoftCover):
                     damage = random.randint(10, 25)
                     book.damage(damage)
-                    print(f"   Прочность снижена на {damage}%. Текущий: {book.get_condition()}%\n")  
+                    print(f"    Прочность снижена на {damage}%. Текущее состояние: {book.get_condition()}\n")  
     
                 elif isinstance(book, GlossyCover):
                     scratches = random.randint(1, 5)
                     book.add_scratches(scratches)
                     damage = random.randint(8, 18)
                     book.damage(damage)
-                    print(f"  Добавлено царапин: {scratches}.\nОбщая прочность {book.get_condition()}\n")              
+                    print(f"    Добавлено царапин: {scratches}.\nОбщая прочность {book.get_condition()}\n")              
             else:
                 print('[Симуляция] Нет книг для повреждения')
 
@@ -144,7 +144,7 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
                     if book.cover_type == search_type:
                         found_books.append(book)
                 
-                print(f"  Найдено: {len(found_books)} книг")
+                print(f"    Найдено: {len(found_books)} книг")
                 for book in found_books: 
                     print(f"    - {book}")
             else:
@@ -159,7 +159,7 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
                 for book in library.book_collection:
                     if book.author == search_author:
                         found_books.append(book)
-                print(f"  Найдено: {len(found_books)} книг")
+                print(f"    Найдено: {len(found_books)} книг")
                 for book in found_books: 
                     print(f"    - {book}")
             else:
@@ -174,7 +174,7 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
                 for book in library.book_collection:
                     if book.year == search_year:
                         found_books.append(book)
-                print(f"  Найдено: {len(found_books)} книг")
+                print(f"    Найдено: {len(found_books)} книг")
                 for book in found_books: 
                     print(f"    - {book}")
             else:
@@ -189,7 +189,7 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
                 for book in library.book_collection:
                     if book.genre == search_genre:
                         found_books.append(book)
-                print(f"  Найдено: {len(found_books)} книг")
+                print(f"    Найдено: {len(found_books)} книг")
                 for book in found_books: 
                     print(f"    - {book}")
             else:
@@ -225,13 +225,15 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
                 fake_isbn = "ISBN-NOT-EXISTS"
                 result = library.search_by_isbn(fake_isbn)
                 if result is None:
-                    print(f"Книга с ISBN '{fake_isbn}' не найдена")
+                    print(f"[Симуляция] Книга с ISBN '{fake_isbn}' не найдена")
                 else:
-                    print(f"Неожиданно найдена: {result}")
+                    print(f"[Симуляция] Неожиданно найдена: {result}")
+            else:
+                print('[Симуляция] Библиотека пуста!')
 
         
     print(f"Симуляция завершена. Книг в библиотеке: {len(added_books_history)}")
 
 
 if __name__ == "__main__":
-    run_simulation(steps = 40, seed = 42)
+    run_simulation(steps = 40, seed = 1)

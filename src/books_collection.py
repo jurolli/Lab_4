@@ -1,5 +1,5 @@
 
-from src.books import Book
+from books import Book
 
 
 class BookCollection:

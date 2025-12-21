@@ -1,5 +1,5 @@
 
-from src.books import Book
+from books import Book
 
 class IndexDict:
 
@@ -70,7 +70,7 @@ class IndexDict:
             self.add_to_year_index(book)
             self.add_to_title_index(book)
             self._all_books.append(book)
-            print(f"Книга '{book.title}' добавлена в индексы")
+            print(f"    Книга '{book.title}' добавлена в индексы")
         except ValueError:
             print(f"[Индексы] Ошибка при добавлении")
 
@@ -98,7 +98,7 @@ class IndexDict:
 
     def remove_book(self, isbn: str) -> bool:
         if isbn not in self._isbn_index:
-            print(f"Книга с ISBN {isbn} не найдена")
+            print(f"    Книга с ISBN {isbn} не найдена")
             return False
         
         book = self._isbn_index[isbn]
@@ -107,7 +107,7 @@ class IndexDict:
         self.remove_from_year_index(book)
         self._all_books.remove(book)
         
-        print(f"Книга '{book.title}' удалена из индексов")
+        print(f"    Книга '{book.title}' удалена из индексов")
         return True
 
     
