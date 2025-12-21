@@ -10,7 +10,7 @@ SIMULATION_EVENTS = [
     "search_by_cover_type",
     "check_condition",
     "remove_book",
-    "get_nonexistent_book",
+    "get_nonexistent",
     "search_by_author",
     "search_by_genre", 
     "search_by_year"
