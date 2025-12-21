@@ -5,7 +5,7 @@ from src.constans import CoverType
 class Book:
 
 
-    def __init__(self, title: str, author: str, year: int, genre: str, cover_type: str, isbn: str, condition:int = 100, has_images: bool = False) -> None:
+    def __init__(self, title: str, author: str, year: int, genre: str, cover_type: CoverType, isbn: str, condition:int = 100, has_images: bool = False) -> None:
         
         if title == "" or title is None:
             raise ValueError("название не может быть пустым")
@@ -115,7 +115,7 @@ class Book:
 class HardCover(Book):
     
     
-    def __init__(self, title: str, author: str, year: int, genre: str, cover_type: str, isbn: str, condition:int = 100, has_images: bool = False) -> None:
+    def __init__(self, title: str, author: str, year: int, genre: str, isbn: str, condition:int = 100, has_images: bool = False) -> None:
         super().__init__(title, author, year, genre, CoverType.HARD, isbn, condition, has_images)
         self.cover_type = CoverType.HARD
         self.has_images = has_images
@@ -139,7 +139,7 @@ class HardCover(Book):
 
 class SoftCover(Book):
 
-    def __init__(self, title: str, author: str, year: int, genre: str, cover_type: str, isbn: str, condition:int = 100, has_images: bool = False) -> None:
+    def __init__(self, title: str, author: str, year: int, genre: str, isbn: str, condition:int = 100, has_images: bool = False) -> None:
         super().__init__(title, author, year, genre, CoverType.SOFT, isbn, condition, has_images)
         self.cover_type = CoverType.SOFT
         self.has_images = has_images
@@ -162,7 +162,7 @@ class SoftCover(Book):
 
 class GlossyCover(Book):
 
-    def __init__(self, title: str, author: str, year: int, genre: str, cover_type: str, isbn: str, condition:int = 100, has_images: bool = True) -> None:
+    def __init__(self, title: str, author: str, year: int, genre: str, isbn: str, condition:int = 100, has_images: bool = True) -> None:
         super().__init__(title, author, year, genre, CoverType.GLOSSY, isbn, condition, has_images)
         self.cover_type = CoverType.GLOSSY
         self.has_images = has_images

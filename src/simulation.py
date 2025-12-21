@@ -32,12 +32,11 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
             author = random.choice(AUTHORS)
             year = random.randint(1900, 2026)
             genre = random.choice(GENRES)
-            cover_type = CoverType.HARD
             isbn = f"HC-{step:04d}-{random.randint(1000,9999)}"
             condition = random.randint(30, 100)
             has_images = random.choice([True, False])
 
-            book = HardCover(title, author, year, genre, cover_type, isbn, condition, has_images)
+            book = HardCover(title, author, year, genre,  isbn, condition, has_images)
             library.add_book(book)
             added_books_history.append(book)
 
@@ -47,12 +46,11 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
             author = random.choice(AUTHORS)
             year = random.randint(1990, 2026)
             genre = random.choice(GENRES)
-            cover_type = CoverType.SOFT
             isbn = f"SC-{step:04d}-{random.randint(1000,9999)}"
             condition = random.randint(30, 100)
             has_images = random.choice([True, False])
             
-            book = SoftCover(title, author, year, genre, cover_type, isbn, condition, has_images)
+            book = SoftCover(title, author, year, genre, isbn, condition, has_images)
             library.add_book(book)
             added_books_history.append(book)
             
@@ -62,12 +60,11 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
             author = 'Редакция журнала'
             year = random.randint(2000, 2026)
             genre = random.choice(['Журнал', 'Альбом', 'Каталог'])
-            cover_type = CoverType.GLOSSY
             isbn = f"GC-{step:04d}-{random.randint(1000,9999)}"
             condition = random.randint(30, 100)
             has_images = random.choice([True, False])
            
-            book = GlossyCover(title, author, year, genre, cover_type, isbn, condition, has_images)
+            book = GlossyCover(title, author, year, genre, isbn, condition, has_images)
             library.add_book(book)
 
             added_books_history.append(book)

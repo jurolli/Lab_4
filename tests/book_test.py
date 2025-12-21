@@ -11,7 +11,7 @@ import pytest
 class TestBook:
     
     def test_create_valid_book(self):
-        book = Book('Эхо террора', 'Харуки Мия', 1869, 'Роман',CoverType.HARD,'ISBN-001', 79, False)
+        book = Book('Эхо террора', 'Харуки Мия', 1869, 'Роман', CoverType.HARD, 'ISBN-001', 79, False)
         assert book.title == 'Эхо террора'
         assert book.author == 'Харуки Мия'
         assert book.year == 1869
@@ -22,7 +22,7 @@ class TestBook:
         assert not book.is_borrowed()
 
     def test_book_creation_with_defaults(self):
-        book = Book('Название', 'Автор', 2000, 'Роман',CoverType.HARD, 'ISBN-002')
+        book = Book('Название', 'Автор', 2000, 'Роман', CoverType.HARD, 'ISBN-002')
         assert book.condition == 100 
         assert not book.has_images
 
@@ -50,10 +50,10 @@ class TestBook:
             Book('Название', 'Автор', 2000, 'Жанр', CoverType.GLOSSY, 'ISBN-009', 150)
         
         with pytest.raises(ValueError):
-            Book('Название', 'Автор', 2000, 'Жанр',   CoverType.GLOSSY, 'ISBN-010', -10)
+            Book('Название', 'Автор', 2000, 'Жанр', CoverType.GLOSSY, 'ISBN-010', -10)
 
     def test_book_borrow_and_return(self):
-        book = Book('Название', 'Автор', 2000, 'Жанр',  CoverType.SOFT, 'ISBN-011')
+        book = Book('Название', 'Автор', 2000, 'Жанр', CoverType.SOFT, 'ISBN-011')
         
         assert not book.is_borrowed()
         
@@ -69,7 +69,7 @@ class TestBook:
         assert book.borrow() == True
 
     def test_book_damage(self):
-        book = Book('Название', 'Автор', 2000, 'Жанр',  CoverType.SOFT, 'ISBN-012', 100)
+        book = Book('Название', 'Автор', 2000, 'Жанр', CoverType.SOFT, 'ISBN-012', 100)
         
         book.damage(20)
         assert book.condition == 80

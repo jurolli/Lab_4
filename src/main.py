@@ -102,7 +102,7 @@ def input_cover_type() -> str:
     print(f"\nВведите тип обложки:")
     print(f"Варианты:\n 1. Твёрдая\n 2. Мягкая\n 3. Глянцевая\n")
     while True:
-        cover_type = input("Ваш ввод: ").strip()
+        cover_type = input("Ваш ввод (слово): ").strip()
         if cover_type != 'Мягкая' and cover_type != 'Твёрдая' and cover_type != 'Глянцевая':
             print("Ошибка: тип обложки должен быть выбран из предложенных'")
             continue
@@ -156,15 +156,15 @@ def add_book(library: Library) -> None:
 
     if cover_type == 'Твёрдая':
         cover_type = CoverType.HARD
-        book = HardCover(title, author, year, genre, cover_type, isbn, condition, has_images)
+        book = HardCover(title, author, year, genre, isbn, condition, has_images)
 
     if cover_type == 'Мягкая':
         cover_type = CoverType.SOFT
-        book = SoftCover(title, author, year, genre, cover_type, isbn, condition, has_images)
+        book = SoftCover(title, author, year, genre,isbn, condition, has_images)
 
     if cover_type == 'Глянцевая':
         cover_type = CoverType.GLOSSY
-        book = GlossyCover(title, author, year, genre, cover_type, isbn, condition, has_images)
+        book = GlossyCover(title, author, year, genre, isbn, condition, has_images)
 
     else:
         print("\nНеверный выбор!")

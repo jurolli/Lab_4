@@ -10,7 +10,7 @@ from src.constans import *
 class TestGlossyCover:
     
     def test_create_glossycover(self):
-        book = GlossyCover('Химия эмоций', 'Ана Мария Дуарте', 2010, 'Жанр', CoverType.GLOSSY, 'ISBN-026', 36, True)
+        book = GlossyCover('Химия эмоций', 'Ана Мария Дуарте', 2010, 'Жанр', 'ISBN-026', 36, True)
         assert isinstance(book, GlossyCover)
         assert isinstance(book, Book)
         assert book.has_images == True
@@ -18,7 +18,7 @@ class TestGlossyCover:
 
     def test_glossycover_add_scratches(self):
         book = GlossyCover('Дневник последнего алхимика', 'Чжан Ли', 2000, 
-                        'Жанр', CoverType.GLOSSY, 'ISBN-024', 80)
+                        'Жанр', 'ISBN-024', 80)
     
         # Начальное состояние: 80 > 70 = "Хорошая"
         assert book.get_condition() == 'Хорошая, без царапин'
