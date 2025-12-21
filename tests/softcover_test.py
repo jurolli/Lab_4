@@ -8,7 +8,7 @@ from src.constans import *
 class TestSoftCover:
     
     def test_create_softcover(self):
-        book = SoftCover('Правила общения с морскими богами', 'Автор', 2000, 'Роман', CoverType.SOFT, 'ISBN-018', 100, False)
+        book = SoftCover('Правила общения с морскими богами', 'Автор', 2000, 'Роман','ISBN-018', 100, False)
         assert isinstance(book, SoftCover)
         assert isinstance(book, Book)
         assert book.has_images == False
