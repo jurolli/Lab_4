@@ -174,9 +174,9 @@ def add_book(library: Library) -> None:
 
     else:
         print("\nНеверный выбор!")
-        return
     library.add_book(book)
     print(f"\nКнига добавлена: {book}")
+    return
 
 
 def borrow_book(library: Library) -> None:
