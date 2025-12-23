@@ -4,49 +4,62 @@ from books import Book, GlossyCover, HardCover, SoftCover
 from books_collection import BookCollection
 from index_dict import IndexDict
 from library import Library
-from constans import *
+from constans import *  
 
 
 def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
-
+    """
+    Запуск симуляции работы библиотеки
+    Параметры:
+    steps - количество шагов симуляции
+    seed - начальное значение для генератора случайных чисел (для воспроизводимости)
+    """
+    
     print(f"\n{'='*60}")
     print(f"СИМУЛЯЦИЯ БИБЛИОТЕКИ")
     print(f"{'='*60}")
     
+    # Установка seed для воспроизводимости случайных событий
     if seed is not None:
         random.seed(seed)
         print(f"[Симуляция] Seed установлен: {seed}")
     
+    # Создание библиотеки
     library = Library('Библиотека')
-    added_books_history = []
+    added_books_history = []  # История добавленных книг для отслеживания
    
     
+    # Основной цикл симуляции
     for step in range(1, steps + 1):
         print(f"\n-- Шаг {step}/{steps} --")
+        
+        # Выбор случайного события из списка
         event = random.choice(SIMULATION_EVENTS)
         print(f"Событие: {event}")
         
 
+        # Добавление книги с твердой обложкой
         if event == 'add_hardcover':
             title = random.choice(TITLES)
             author = random.choice(AUTHORS)
             year = random.randint(1900, 2026)
             genre = random.choice(GENRES)
-            isbn = f"HC-{step:04d}-{random.randint(1000,9999)}"
-            condition = random.randint(30, 100)
+            isbn = f"HC-{step:04d}-{random.randint(1000,9999)}"  # Уникальный ISBN для твердой обложки
+            condition = random.randint(30, 100)  # Случайное начальное состояние
             has_images = random.choice([True, False])
 
-            book = HardCover(title, author, year, genre,  isbn, condition, has_images)
+            book = HardCover(title, author, year, genre, isbn, condition, has_images)
             library.add_book(book)
             added_books_history.append(book)
 
 
+        # Добавление книги с мягкой обложкой
         elif event == 'add_softcover':
             title = random.choice(TITLES)
             author = random.choice(AUTHORS)
             year = random.randint(1990, 2026)
             genre = random.choice(GENRES)
-            isbn = f"SC-{step:04d}-{random.randint(1000,9999)}"
+            isbn = f"SC-{step:04d}-{random.randint(1000,9999)}"  # Уникальный ISBN для мягкой обложки
             condition = random.randint(30, 100)
             has_images = random.choice([True, False])
             
@@ -55,12 +68,13 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
             added_books_history.append(book)
             
 
+        # Добавление книги с глянцевой обложкой
         elif event == 'add_glossycover':
             title = random.choice(TITLES)
-            author = 'Редакция журнала'
+            author = 'Редакция журнала'  # Фиксированный автор для глянцевых обложек
             year = random.randint(2000, 2026)
-            genre = random.choice(['Журнал', 'Альбом', 'Каталог'])
-            isbn = f"GC-{step:04d}-{random.randint(1000,9999)}"
+            genre = random.choice(['Журнал', 'Альбом', 'Каталог'])  # Особые жанры для глянцевых обложек
+            isbn = f"GC-{step:04d}-{random.randint(1000,9999)}"  # Уникальный ISBN для глянцевой обложки
             condition = random.randint(30, 100)
             has_images = random.choice([True, False])
            
@@ -69,33 +83,36 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
 
             added_books_history.append(book)
             
-
+        # Взятие книги в аренду
         elif event == 'borrow_book':
             if added_books_history:
                 book = random.choice(added_books_history)
                 print(f"[Симуляция] Пытаемся взять книгу: {book.title}\n")
+                
                 if book.borrow():
                     print(f"    Книга взята. Всего взятий: {book.borrow_count()}\n")
-
+                    # Нанесение урона в зависимости от типа обложки
                     if isinstance(book, HardCover):
-                        book.damage(random.randint(0, 5))
+                        book.damage(random.randint(0, 5))  # Меньший урон для твердой обложки
                     elif isinstance(book, SoftCover):
-                        book.damage(random.randint(3, 7))
+                        book.damage(random.randint(3, 7))  # Средний урон для мягкой обложки
                     elif isinstance(book, GlossyCover):
-                        book.add_scratches(random.randint(0, 5))
-                        book.damage(random.randint(3, 10))
+                        book.add_scratches(random.randint(0, 5))  # Добавление царапин
+                        book.damage(random.randint(3, 10))  # Урон для глянцевой обложки
                 else:
                     print(' Книга уже взята')
             else:
                 print('[Симуляция] Нет книг для взятия')
 
-
+        # Возврат книги
         elif event == 'return_book':
             if added_books_history:
                 borrowed_books = []
+                # Поиск взятых книг
                 for b in added_books_history:
                     if b.is_borrowed:
                         borrowed_books.append(b)
+                        
                 if borrowed_books:
                     book = random.choice(borrowed_books)
                     book.return_book()
@@ -105,8 +122,7 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
             else:
                 print('[Симуляция] Нет книг в библиотеке')
 
-
-
+        # Нанесение повреждения книге
         elif event == 'damage_book':
             if added_books_history:
                 book = random.choice(added_books_history)
@@ -124,19 +140,17 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
     
                 elif isinstance(book, GlossyCover):
                     scratches = random.randint(1, 5)
-                    book.add_scratches(scratches)
+                    book.add_scratches(scratches)  # Добавление царапин
                     damage = random.randint(8, 18)
                     book.damage(damage)
                     print(f"    Добавлено царапин: {scratches}.\nОбщая прочность {book.get_condition()}\n")              
             else:
                 print('[Симуляция] Нет книг для повреждения')
 
-
-              
+        # Поиск книг по типу обложки
         elif event == 'search_by_cover_type':
             cover_types = [CoverType.HARD, CoverType.SOFT, CoverType.GLOSSY]
             search_type = random.choice(cover_types)
-            
             print(f"[Симуляция] Поиск книг с обложкой: {search_type}")
             if added_books_history:
                 found_books = []
@@ -151,6 +165,7 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
                 print('[Симуляция] Библиотека пуста, поиск невозможен')
 
 
+        # Поиск книг по автору
         elif event == 'search_by_author':
             if added_books_history:
                 found_books = []
@@ -165,7 +180,7 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
             else:
                 print('[Симуляция] Библиотека пуста, поиск невозможен')
 
-
+        # Поиск книг по году издания
         elif event == 'search_by_year':
             if added_books_history:
                 found_books = []
@@ -179,8 +194,8 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
                     print(f"    - {book}")
             else:
                 print('[Симуляция] Библиотека пуста, поиск невозможен')
-
         
+        # Поиск книг по жанру
         elif event == 'search_by_genre':
             if added_books_history:
                 found_books = []
@@ -194,8 +209,8 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
                     print(f"    - {book}")
             else:
                 print('[Симуляция] Библиотека пуста, поиск невозможен')
-  
                 
+        # Проверка состояния книг
         elif event == 'check_condition':
             if added_books_history:
                 sample_size = min(3, len(added_books_history))
@@ -206,20 +221,20 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
                     condition = book.get_condition()
                     print(f"  {book.title}: {condition}")        
             else:
-                print('[Симуляция] Нет книг для проверки состояния')
-                
+                print('[Симуляция] Нет книг для проверки состояния')           
 
+        # Удаление книги
         elif event == 'remove_book':
             if added_books_history:
                 book = random.choice(added_books_history)
                 print(f"[Симуляция] Удаляем книгу: {book.title}")
                 success = library.remove_book_by_title(book.title)
                 if success:
-                    added_books_history.remove(book)
+                    added_books_history.remove(book)  # Удаляем из истории
             else:
                 print('[Симуляция] Нет книг для удаления')
-
-            
+         
+        # Поиск несуществующей книги
         elif event == 'get_nonexistent':
             if added_books_history:
                 fake_isbn = "ISBN-NOT-EXISTS"
@@ -230,10 +245,11 @@ def run_simulation(steps: int = 40, seed: Optional[int] = None) -> None:
                     print(f"[Симуляция] Неожиданно найдена: {result}")
             else:
                 print('[Симуляция] Библиотека пуста!')
-
-        
+   
+    # Завершение симуляции
     print(f"Симуляция завершена. Книг в библиотеке: {len(added_books_history)}")
 
 
 if __name__ == "__main__":
+    # Запуск симуляции с заданными параметрами
     run_simulation(steps = 40, seed = 1)

@@ -1,4 +1,3 @@
-
 from typing import Optional
 import random
 from books import Book, GlossyCover, HardCover, SoftCover
@@ -7,10 +6,30 @@ from index_dict import IndexDict
 from library import Library
 from constans import *
     
+def str_validation(s:str) -> bool:
+    """
+    Проверка строковых аргументов на корректность
+    Параметры:
+    s - строка для проверки
+    Возвращает:
+    bool - True если строка корректна, False если есть ошибки
+    """
+    if s == "":
+        print("Ошибка: поле не может быть пустым")
+        return False
+    for symbol in range(len(s)):
+        if s[symbol] in ['@', '#', '$', '%', '^', '&', '*', '=', '+', '<', '>', '/', '\\', '|', '~', '`']:
+            return False
+    if not s[0].isupper():
+        print("Ошибка: должно начинаться с большой буквы")
+        return False
+    else:
+        return True
 
 # принты
 
 def print_commands():
+    """Вывод списка возможных команд"""
     print("\nСИСТЕМА УПРАВЛЕНИЯ БИБЛИОТЕКОЙ\n")
     print("1. Добавить книгу (по типу обложки)")
     print("2. Взять книгу")
@@ -22,83 +41,71 @@ def print_commands():
     print("8. Найти книги по году")
     print("9. Проверить состояние всех книг")
     print("10. Удалить книгу")
- 
     print("0. Выход")
 
 
 def print_type_cover():
+    """Вывод доступных типов обложки"""
     print("\nВыберите тип обложки\n")
     print("1. твёрдая")
     print("2. мягкая")
     print("3. глянцевая(журнальная)")
 
-
 # инпуты
 
 def input_title() -> str:
+    """Ввод названия книги"""
     print(f"\nВведите название книги:")
     while True:
         title = input(f"Название книги (с заглавной буквы): ").strip()
-        if title == "":
-            print("Ошибка: название не может быть пустым")
-            return False
-        for symbol in range(len(title)):
-            if title[symbol] in ['@', '#', '$', '%', '^', '&', '*', '=', '+', '<', '>', '/', '\\', '|', '~', '`']:
-                return False
-        if not title[0].isupper():
-            print("Ошибка: должно начинаться с большой буквы")
+        if str_validation(title) == True:  # Если строка прошла проверку, возвращаем её
             continue
         return title
 
 
 def input_author() -> str:
+    """Ввод автора книги"""
     print(f"\nВведите автора книги:")
     while True:
         author = input("Автор книги (с заглавной буквы): ").strip()
-        if author == "":
-            print("Ошибка: название не может быть пустым")
-            return False
-        for symbol in range(len(author)):
-            if author[symbol] in ['@', '#', '$', '%', '^', '&', '*', '=', '+', '<', '>', '/', '\\', '|', '~', '`']:
-                return False
-        if not author[0].isupper():
-            print("Ошибка: должно начинаться с большой буквы")
+        if str_validation(author) == True:
             continue
         return author
 
 
 def input_year() -> int:
+    """Ввод года издания"""
     print(f"\nВведите год издания книги:")
     while True:
         year = input("Год издания: ").strip()
         if year == "":
             print("Ошибка: год не может быть пустым")
             continue
-        for symbol in year:
-            if symbol.isdigit() == False:
-                print("Ошибка: год должен быть числом")
+        if year.isdigit() == False:
+            print("Ошибка: год должен быть числом")
             continue
-        return int(year)
+        try:
+            return int(year)
+        except ValueError:
+            print("Ошибка: некорректное число")
 
 
-def input_genre() -> int:
+def input_genre() -> str:
+    """Ввод жанра книги"""
     print(f"\nВведите жанр книги:")
     print(f"Возможно вы искали: {', '.join(GENRES)}")
     while True:
         genre = input("Жанр книги (с заглавной буквы): ").strip()
-        if genre == "":
-            print("Ошибка: название не может быть пустым")
-            return False
         for symbol in range(len(genre)):
-            if genre[symbol] in ['@', '#', '$', '%', '^', '&', '*', '=', '+', '<', '>', '/', '\\', '|', '~', '`'] or genre[symbol].isdigit() == True:
+            if genre[symbol].isdigit() == True:
+                print("Ошибка: жанр не может содержать цифры")
                 return False
-        if not genre[0].isupper():
-                print("Ошибка: должно начинаться с большой буквы")
-                continue
-        return genre
+        if str_validation(genre) == True:
+            return genre
 
 
 def input_cover_type() -> str:
+    """Ввод типа обложки """
     print(f"\nВведите тип обложки:")
     print(f"Варианты:\n 1. Твёрдая\n 2. Мягкая\n 3. Глянцевая\n")
     while True:
@@ -110,6 +117,7 @@ def input_cover_type() -> str:
 
 
 def input_condition() -> int:
+    """Ввод состояния книги (0-100)"""
     print(f"\nВведите состояние книги(в процентах без знака '%'): ")
     while True:
         condition = input("Cостояние книги: ").strip()
@@ -124,6 +132,7 @@ def input_condition() -> int:
 
 
 def input_has_images() -> bool:
+    """Ввод информации о наличии изображений в книге"""
     images = input('\nЕсть ли в книге изображения? (y/n) или (да/нет): ')
     while True:
         if images == 'y' or 'yes' or 'да':
@@ -136,11 +145,10 @@ def input_has_images() -> bool:
             print('Ошибка: ответ может быть только (y/n)')
             continue
 
-
 # команды
 
-
 def add_book(library: Library) -> None:
+    """Добавление новой книги в библиотеку"""
     title = input_title()
     author = input_author()
     year = input_year()
@@ -160,7 +168,7 @@ def add_book(library: Library) -> None:
 
     if cover_type == 'Мягкая':
         cover_type = CoverType.SOFT
-        book = SoftCover(title, author, year, genre,isbn, condition, has_images)
+        book = SoftCover(title, author, year, genre, isbn, condition, has_images)
 
     if cover_type == 'Глянцевая':
         cover_type = CoverType.GLOSSY
@@ -174,6 +182,7 @@ def add_book(library: Library) -> None:
 
 
 def borrow_book(library: Library) -> None:
+    """Взятие книги"""
     if len(library.book_collection) == 0:
         print("\nБиблиотека пуста!")
         return 
@@ -229,6 +238,7 @@ def borrow_book(library: Library) -> None:
        
 
 def return_book(library: Library) -> None:
+    """Возврат взятой книги"""
     title = input_title("Введите название или позже ISBN: ").strip()
     isbn = input("Введите ISBN: ").strip()
 
@@ -251,6 +261,7 @@ def return_book(library: Library) -> None:
 
 
 def damage_book(library: Library)  -> None:
+    """Нанесение урона книге"""
     if len(library) != 0:
         book = input_title("введите название: ").strip()
         print(f"Наносим повреждение: {book.title}\n")
@@ -278,8 +289,8 @@ def damage_book(library: Library)  -> None:
         print('\nНет книг в библиотеке')
 
 
-
 def search_by_isbn(library: Library) -> None:
+    """Поиск книги по ISBN"""
     isbn = input("Введите ISBN: ").strip()
     book = library.search_by_isbn(isbn)
 
@@ -295,6 +306,7 @@ def search_by_isbn(library: Library) -> None:
 
 
 def search_by_author(library: Library) -> None:
+    """Поиск книг по автору"""
     if len(library.book_collection) != 0:
         found_books = []
         search_author = input("Введите имя Автора: ").strip()
@@ -310,7 +322,8 @@ def search_by_author(library: Library) -> None:
 
 
 def search_by_year(library: Library) -> None:
-   if len(library.book_collection) != 0:
+    """Поиск книг по году издания"""
+    if len(library.book_collection) != 0:
         found_books = []
         search_year = input("Введите год издания: ").strip()
         print(f" Поиск книг {search_year} года")
@@ -325,6 +338,7 @@ def search_by_year(library: Library) -> None:
 
 
 def search_by_genre(library: Library) -> None:
+    """Поиск книг по жанру"""
     if len(library.book_collection) != 0:
         found_books = []
         search_genre =input("Введите жанр: ").strip()
@@ -340,6 +354,7 @@ def search_by_genre(library: Library) -> None:
 
 
 def check_condition(library: Library) -> None:
+    """Проверка состояния всех книг в библиотеке"""
     if len(library.book_collection) != 0:
         print(f"Проверка состояния книг:")
         for book in library.book_collection:
@@ -350,6 +365,7 @@ def check_condition(library: Library) -> None:
                 
 
 def remove_book(library: Library) -> None:
+    """Удаление книги из библиотеки"""
     if len(library.book_collection) != 0:
         title = input_title("введите название: ").strip()
         book = library.search_by_title(title)
@@ -364,6 +380,7 @@ def remove_book(library: Library) -> None:
 
 
 def main() -> None:
+    """Главная функция - основной цикл программы"""
     library = Library('Мvv')
     while True:
         print_commands()
