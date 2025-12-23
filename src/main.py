@@ -59,8 +59,7 @@ def input_title() -> str:
     while True:
         title = input(f"Название книги (с заглавной буквы): ").strip()
         if str_validation(title) == True:  # Если строка прошла проверку, возвращаем её
-            continue
-        return title
+            return title
 
 
 def input_author() -> str:
@@ -69,8 +68,7 @@ def input_author() -> str:
     while True:
         author = input("Автор книги (с заглавной буквы): ").strip()
         if str_validation(author) == True:
-            continue
-        return author
+            return author
 
 
 def input_year() -> int:
